@@ -7,10 +7,19 @@ if [ -f "./.env" ]; then
 fi
 
 # Check for required commands
-for cmd in n8n qdrant ollama; do
+# Check for required commands
+for cmd in n8n qdrant ollama psql; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "Warning: $cmd is not installed or not in PATH" >&2
+    echo "Error: $cmd is not installed or not in PATH" >&2
+    exit 1
   fi
+done
+
+# Wait for PostgreSQL to be ready
+until psql -h localhost -U "${POSTGRES_USER:-postgres}" -d "${POSTGRES_DB:-postgres}" -c '\q' 2>/dev/null; do
+  echo "Waiting for PostgreSQL to be ready..."
+  sleep 1
+done
 done
 
 # Start n8n
