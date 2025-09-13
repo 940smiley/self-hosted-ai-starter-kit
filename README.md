@@ -1,6 +1,8 @@
 # Self-hosted AI starter kit
 
-**Self-hosted AI Starter Kit** is an open-source Docker Compose template designed to swiftly initialize a comprehensive local AI and low-code development environment.
+**Self-hosted AI Starter Kit** is an open-source template designed to swiftly
+initialize a comprehensive local AI and low-code development environment
+**without requiring Docker**.
 
 ![n8n.io - Screenshot](https://raw.githubusercontent.com/n8n-io/self-hosted-ai-starter-kit/main/assets/n8n-demo.gif)
 
@@ -11,7 +13,7 @@ quickly get started with building self-hosted AI workflows.
 > [!TIP]
 > [Read the announcement](https://blog.n8n.io/self-hosted-ai/)
 
-### What’s included
+## What’s included
 
 ✅ [**Self-hosted n8n**](https://n8n.io/) - Low-code platform with over 400
 integrations and advanced AI components
@@ -25,7 +27,7 @@ store with an comprehensive API
 ✅ [**PostgreSQL**](https://www.postgresql.org/) -  Workhorse of the Data
 Engineering world, handles large amounts of data safely.
 
-### What you can build
+## What you can build
 
 ⭐️ **AI Agents** for scheduling appointments
 
@@ -44,79 +46,21 @@ git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
 cd self-hosted-ai-starter-kit
 ```
 
-### Running n8n using Docker Compose
+### Running n8n locally
 
-#### For Nvidia GPU users
-
-```
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-cd self-hosted-ai-starter-kit
-docker compose --profile gpu-nvidia up
-```
-
-> [!NOTE]
-> If you have not used your Nvidia GPU with Docker before, please follow the
-> [Ollama Docker instructions](https://github.com/ollama/ollama/blob/main/docs/docker.md).
-
-### For AMD GPU users on Linux
-
-```
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-cd self-hosted-ai-starter-kit
-docker compose --profile gpu-amd up
-```
-
-#### For Mac / Apple Silicon users
-
-If you’re using a Mac with an M1 or newer processor, you can't expose your GPU
-to the Docker instance, unfortunately. There are two options in this case:
-
-1. Run the starter kit fully on CPU, like in the section "For everyone else"
-   below
-2. Run Ollama on your Mac for faster inference, and connect to that from the
-   n8n instance
-
-If you want to run Ollama on your mac, check the
-[Ollama homepage](https://ollama.com/)
-for installation instructions, and run the starter kit as follows:
-
-```
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-cd self-hosted-ai-starter-kit
-docker compose up
-```
-
-##### For Mac users running OLLAMA locally
-
-If you're running OLLAMA locally on your Mac (not in Docker), you need to modify the OLLAMA_HOST environment variable
-in the n8n service configuration. Update the x-n8n section in your Docker Compose file as follows:
-
-```yaml
-x-n8n: &service-n8n
-  # ... other configurations ...
-  environment:
-    # ... other environment variables ...
-    - OLLAMA_HOST=host.docker.internal:11434
-```
-
-Additionally, after you see "Editor is now accessible via: <http://localhost:5678/>":
-
-1. Head to <http://localhost:5678/home/credentials>
-2. Click on "Local Ollama service"
-3. Change the base URL to "http://host.docker.internal:11434/"
-
-#### For everyone else
-
-```
-git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-cd self-hosted-ai-starter-kit
-docker compose --profile cpu up
-```
+1. Install the required services on your machine:
+   - [n8n](https://docs.n8n.io/getting-started/installation/) (`npm install -g n8n`)
+   - [PostgreSQL](https://www.postgresql.org/download/)
+   - [Qdrant](https://qdrant.tech/documentation/quick_start/)
+   - [Ollama](https://ollama.com/)
+2. Clone this repository and adjust the values in `.env` if necessary.
+3. Start PostgreSQL, Qdrant, and Ollama so they listen on their default ports.
+4. Run `./start.sh` to launch n8n with the local services.
 
 ## ⚡️ Quick start and usage
 
-The core of the Self-hosted AI Starter Kit is a Docker Compose file, pre-configured with network and storage settings, minimizing the need for additional installations.
-After completing the installation steps above, simply follow the steps below to get started.
+After completing the installation steps above, simply follow the steps below
+to get started.
 
 1. Open <http://localhost:5678/> in your browser to set up n8n. You’ll only
    have to do this once.
@@ -124,8 +68,8 @@ After completing the installation steps above, simply follow the steps below to 
    <http://localhost:5678/workflow/srOnR8PAY3u4RSwb>
 3. Click the **Chat** button at the bottom of the canvas, to start running the workflow.
 4. If this is the first time you’re running the workflow, you may need to wait
-   until Ollama finishes downloading Llama3.2. You can inspect the docker
-   console logs to check on the progress.
+   until Ollama finishes downloading Llama3.2. You can inspect the Ollama logs
+   to check on the progress.
 
 To open n8n at any time, visit <http://localhost:5678/> in your browser.
 
@@ -145,26 +89,9 @@ language model and Qdrant as your vector store.
 
 ## Upgrading
 
-* ### For Nvidia GPU setups:
-
-```bash
-docker compose --profile gpu-nvidia pull
-docker compose create && docker compose --profile gpu-nvidia up
-```
-
-* ### For Mac / Apple Silicon users
-
-```
-docker compose pull
-docker compose create && docker compose up
-```
-
-* ### For Non-GPU setups:
-
-```bash
-docker compose --profile cpu pull
-docker compose create && docker compose --profile cpu up
-```
+Upgrade each service according to its official documentation. For example,
+update n8n with `npm update -g n8n` and follow the upgrade guides for
+PostgreSQL, Qdrant, and Ollama.
 
 ## 👓 Recommended reading
 
@@ -201,7 +128,8 @@ your local n8n instance.
 
 - [Tax Code Assistant](https://n8n.io/workflows/2341-build-a-tax-code-assistant-with-qdrant-mistralai-and-openai/)
 - [Breakdown Documents into Study Notes with MistralAI and Qdrant](https://n8n.io/workflows/2339-breakdown-documents-into-study-notes-using-templating-mistralai-and-qdrant/)
-- [Financial Documents Assistant using Qdrant and](https://n8n.io/workflows/2335-build-a-financial-documents-assistant-using-qdrant-and-mistralai/) [Mistral.ai](http://mistral.ai/)
+- [Financial Documents Assistant using Qdrant and](https://n8n.io/workflows/2335-build-a-financial-documents-assistant-using-qdrant-and-mistralai/)
+  [Mistral.ai](http://mistral.ai/)
 - [Recipe Recommendations with Qdrant and Mistral](https://n8n.io/workflows/2333-recipe-recommendations-with-qdrant-and-mistral/)
 
 ## Tips & tricks
@@ -209,12 +137,11 @@ your local n8n instance.
 ### Accessing local files
 
 The self-hosted AI starter kit will create a shared folder (by default,
-located in the same directory) which is mounted to the n8n container and
-allows n8n to access files on disk. This folder within the n8n container is
-located at `/data/shared` -- this is the path you’ll need to use in nodes that
-interact with the local filesystem.
+located in the same directory) which allows n8n to access files on disk.
+When running locally, use the path `./shared` in nodes that interact with the
+local filesystem.
 
-**Nodes that interact with the local filesystem**
+#### Nodes that interact with the local filesystem
 
 - [Read/Write Files from Disk](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.filesreadwrite/)
 - [Local File Trigger](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.localfiletrigger/)
